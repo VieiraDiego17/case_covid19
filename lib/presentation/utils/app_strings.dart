@@ -2,7 +2,7 @@ class AppStrings {
   //SPLASH
   static const String splashTitle = 'COVID-19';
   static const String splashSubtitle = 'CORONAVIRUS 2019 - nCOV';
-  static const String splashLoading = 'Loading';
+  static const String splashLoading = 'Loading...';
 
   //LOGIN
   static const String loginTitle = 'Login';
@@ -46,4 +46,9 @@ class AppStrings {
   static const String homeDeviceInfoType = 'Tipo de dispositivo';
   static const String homeDeviceInfoSystemAndVersion = 'Sistema Op. y versión';
   static const String homeDeviceInfoLoading = 'Carregando...';
+
+  //DETAILS
+  static const String detailseCardInfo = 'Casos total:';
+  static const String detailsCardDateModification = 'Ultima modificación:';
+  static const String detailsAppBarTitle = 'Detalles por región';
 }

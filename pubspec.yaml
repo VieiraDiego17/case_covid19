@@ -78,6 +78,62 @@ flutter:
     - assets/icon_details.png
     - assets/details.png
 
+  #flags
+    - assets/flags/alaska.png
+    - assets/flags/alabama.png
+    - assets/flags/arizona.png
+    - assets/flags/arkansas.png
+    - assets/flags/american_samoa.png
+    - assets/flags/california.png
+    - assets/flags/colorado.png
+    - assets/flags/connecticut.png
+    - assets/flags/district_of_columbia.png
+    - assets/flags/delaware.png
+    - assets/flags/florida.png
+    - assets/flags/georgia.png
+    - assets/flags/guam.png
+    - assets/flags/hawaii.png
+    - assets/flags/idaho.png
+    - assets/flags/illinois.png
+    - assets/flags/indiana.png
+    - assets/flags/iowa.png
+    - assets/flags/kansas.png
+    - assets/flags/kentucky.png
+    - assets/flags/louisiana.png
+    - assets/flags/maine.png
+    - assets/flags/maryland.png
+    - assets/flags/massachusetts.png
+    - assets/flags/michigan.png
+    - assets/flags/minnesota.png
+    - assets/flags/northern_mariana_islands.png
+    - assets/flags/missouri.png
+    - assets/flags/montana.png
+    - assets/flags/nebraska.png
+    - assets/flags/nevada.png
+    - assets/flags/new_hampshire.png
+    - assets/flags/new_jersey.png
+    - assets/flags/new_mexico.png
+    - assets/flags/new_york.png
+    - assets/flags/north_carolina.png
+    - assets/flags/north_dakota.png
+    - assets/flags/ohio.png
+    - assets/flags/oklahoma.png
+    - assets/flags/oregon.png
+    - assets/flags/pennsylvania.png
+    - assets/flags/puerto_rico.png
+    - assets/flags/rhode_island.png
+    - assets/flags/south_carolina.png
+    - assets/flags/south_dakota.png
+    - assets/flags/tennessee.png
+    - assets/flags/texas.png
+    - assets/flags/utah.png
+    - assets/flags/vermont.png
+    - assets/flags/virginia.png
+    - assets/flags/virgin_islands.png
+    - assets/flags/washington.png
+    - assets/flags/west_virginia.png
+    - assets/flags/wisconsin.png
+    - assets/flags/wyoming.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
