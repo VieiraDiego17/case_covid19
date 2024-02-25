@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../domain/usecases/auth_manager.dart';
-import '../utils/strings.dart';
+import '../utils/app_strings.dart';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,6 +13,7 @@ class _LoginPageState extends State<LoginPage> {
   final _nomeDocumentoController = TextEditingController();
   final _numeroDocumentoController = TextEditingController();
   final _senhaController = TextEditingController();
+
   bool _obscureText = true;
 
   late AuthManager _authManager;
