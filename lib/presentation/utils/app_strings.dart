@@ -51,4 +51,8 @@ class AppStrings {
   static const String detailseCardInfo = 'Casos total:';
   static const String detailsCardDateModification = 'Ultima modificación:';
   static const String detailsAppBarTitle = 'Detalles por región';
+
+  //REGION
+  static const String regionDataError = 'Erro ao carregar os dados';
+  static const String regionDataNotFound = 'Dados não encontrados';
 }
