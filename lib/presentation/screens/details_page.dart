@@ -3,8 +3,11 @@ import 'package:app_covid19/presentation/screens/home_page.dart';
 import 'package:app_covid19/presentation/screens/region_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import '../../data/models/state_data.dart';
 import '../../data/services/state_info_service.dart';
+import '../../domain/providers/theme_notifier.dart';
 import '../utils/app_strings.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -65,22 +68,30 @@ class _DetailsPageServiceState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
+    ThemeNotifier themeNotifier = Provider.of<ThemeNotifier>(context);
+    ThemeData themeData = themeNotifier.getTheme();
+    return WillPopScope(
+        onWillPop: () async {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+      return true;
+    },
+    child: Scaffold(
       appBar: AppBar(
         title: const Text(
           AppStrings.detailsAppBarTitle,
-          style: TextStyle(color: Colors.black),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
-          color: Colors.black,
           onPressed: () => Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => HomePage()),
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: themeData.appBarTheme.backgroundColor,
+        foregroundColor: themeData.appBarTheme.foregroundColor,
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
@@ -105,7 +116,7 @@ class _DetailsPageServiceState extends State<DetailsPage> {
                   borderRadius: BorderRadius.circular(20.0),
                   side: BorderSide(color: Colors.grey[400]!),
                 ),
-                color: Colors.grey[200],
+                color: themeData.primaryColorLight,
                 child: Padding(
                   padding: EdgeInsets.all(10),
                   child: Row(
@@ -154,6 +165,7 @@ class _DetailsPageServiceState extends State<DetailsPage> {
           },
         ),
       ),
+    ),
     );
   }
 }

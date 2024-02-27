@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import '../../data/services/covid_data_service.dart';
 import '../../data/services/device_info_service.dart';
+import '../../domain/providers/theme_notifier.dart';
 import '../utils/app_strings.dart';
 import 'details_page.dart';
 import 'login_page.dart';
@@ -46,19 +48,18 @@ class _HomePageState extends State<HomePage> {
       print('${AppStrings.fetchCovidDataPrintError} $e');
       showDialog(
         context: context,
-        builder: (context) =>
-            AlertDialog(
-              title: Text(AppStrings.homeDialogCovidDataError),
-              content: Text(AppStrings.homeDialogCovidDataMessage),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(AppStrings.homeDialogCovidDataButtonOk),
-                ),
-              ],
+        builder: (context) => AlertDialog(
+          title: Text(AppStrings.homeDialogCovidDataError),
+          content: Text(AppStrings.homeDialogCovidDataMessage),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(AppStrings.homeDialogCovidDataButtonOk),
             ),
+          ],
+        ),
       );
     }
   }
@@ -71,10 +72,24 @@ class _HomePageState extends State<HomePage> {
     return (positive + negative + pending).toInt();
   }
 
+  void _toggleTheme(BuildContext context) {
+    ThemeNotifier themeNotifier = Provider.of<ThemeNotifier>(context, listen: false);
+    if (themeNotifier.getTheme().brightness == Brightness.light) {
+      themeNotifier.setTheme(darkTheme);
+    } else {
+      themeNotifier.setTheme(lightTheme);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    ThemeNotifier themeNotifier = Provider.of<ThemeNotifier>(context);
+    ThemeData themeData = themeNotifier.getTheme();
+    return WillPopScope(
+        onWillPop: () async {
+      return false;
+    },
+    child: Scaffold(
       body: Stack(
         children: [
           Column(
@@ -119,7 +134,8 @@ class _HomePageState extends State<HomePage> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LoginPage()),
+                                  builder: (context) => LoginPage(),
+                                ),
                               );
                             },
                           ),
@@ -129,14 +145,11 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-
               Expanded(
                 child: Container(
-                  color: Colors.white,
                   padding: EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [],
                   ),
                 ),
               ),
@@ -144,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                 flex: 3,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: themeData.backgroundColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
@@ -153,16 +166,22 @@ class _HomePageState extends State<HomePage> {
                   child: _deviceInfoDevice != null
                       ? Padding(
                     padding: const EdgeInsets.only(
-                        top: 20.0, left: 15, right: 15),
+                      top: 20.0,
+                      left: 15,
+                      right: 15,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: Text(
-                            '${AppStrings.homeDateMessage} ${DateFormat(
-                                'dd/MM/yyyy').format(DateTime.now())}',
-                            style: TextStyle(fontSize: 12),
+                          padding: const EdgeInsets.only(top: 10, left: 5),
+                          child: Row(
+                            children: [
+                              Text(
+                                '${AppStrings.homeDateMessage} ${DateFormat('dd/MM/yyyy').format(DateTime.now())}',
+                                style: TextStyle(fontSize: 12, color: themeData.primaryColor),
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(height: 5),
@@ -171,8 +190,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Expanded(
                               child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   _buildCard(
                                     title: AppStrings.homeCardPositiveCases,
@@ -199,8 +217,7 @@ class _HomePageState extends State<HomePage> {
                             SizedBox(width: 10),
                             Expanded(
                               child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   _buildCard(
                                     title: AppStrings.homeCardConfirmedCases,
@@ -230,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Container(
-                color: Colors.grey[300],
+                color: themeData.backgroundColor,
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   AppStrings.homeBottomMessage,
@@ -238,40 +255,65 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(fontSize: 10, color: Colors.black),
                 ),
               ),
+
             ],
           ),
           if (_deviceInfoDevice != null)
             Positioned(
-              top: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.28,
+              top: MediaQuery.of(context).size.height * 0.28,
               left: 15,
               right: 15,
               child: Builder(
-                builder: (context) =>
-                    DeviceInfoOverlay(
-                      deviceInfo: _deviceInfoDevice,
-                      dateTimeStream: _dateTimeStream,
-                    ),
+                builder: (context) => DeviceInfoOverlay(
+                  deviceInfo: _deviceInfoDevice,
+                  dateTimeStream: _dateTimeStream,
+                ),
               ),
             ),
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.43,
+            right: MediaQuery.of(context).size.height * 0.05,
+              child: GestureDetector(
+                onTap: () {
+                  _toggleTheme(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(color: Colors.black, width: 1),
+                    color: themeData.backgroundColor,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.wb_sunny, color: themeData.primaryColor, size: 20),
+                      SizedBox(width: 10),
+                      Icon(Icons.nightlight_round, color: themeData.primaryColor, size: 20),
+                    ],
+                  ),
+                ),
+              ),)
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => DetailsPage()));
+            context,
+            MaterialPageRoute(builder: (context) => DetailsPage()),
+          );
         },
         backgroundColor: Colors.orange,
         child: Icon(Icons.add),
         shape: CircleBorder(),
       ),
+    ),
     );
   }
 
   Widget _buildCard({required String title, required dynamic content}) {
+    ThemeNotifier themeNotifier = Provider.of<ThemeNotifier>(context);
+    ThemeData themeData = themeNotifier.getTheme();
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
@@ -321,10 +363,12 @@ class DeviceInfoOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeNotifier themeNotifier = Provider.of<ThemeNotifier>(context);
+    ThemeData themeData = themeNotifier.getTheme();
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: themeData.primaryColorLight,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(

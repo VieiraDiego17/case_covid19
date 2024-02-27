@@ -1,7 +1,11 @@
 import 'package:app_covid19/data/services/region_data_service.dart';
+import 'package:app_covid19/presentation/screens/details_page.dart';
 import 'package:app_covid19/presentation/utils/app_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../data/models/map_flags.dart';
+import '../../domain/providers/theme_notifier.dart';
 
 class RegionPage extends StatefulWidget {
   final String stateName;
@@ -49,15 +53,25 @@ class _RegionPageState extends State<RegionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    ThemeNotifier themeNotifier = Provider.of<ThemeNotifier>(context);
+    ThemeData themeData = themeNotifier.getTheme();
+    return WillPopScope(
+        onWillPop: () async {
+      Navigator.pop(context);
+      return true;
+    },
+    child:  Scaffold(
       appBar: AppBar(
-        title: Text('${widget.stateName}', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
+        title: Text('${widget.stateName}'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
-          color: Colors.black,
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => DetailsPage()),
+          ),
         ),
+        backgroundColor: themeData.appBarTheme.backgroundColor,
+        foregroundColor: themeData.appBarTheme.foregroundColor,
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: _data,
@@ -107,7 +121,7 @@ class _RegionPageState extends State<RegionPage> {
                         borderRadius: BorderRadius.circular(16.0),
                         side: BorderSide(color: Colors.grey[400]!),
                       ),
-                      color: Colors.grey[200],
+                      color: themeData.primaryColorLight,
                       child: ListTile(
                         leading: key == 'state'
                             ? CircleAvatar(
@@ -132,6 +146,7 @@ class _RegionPageState extends State<RegionPage> {
           }
         },
       ),
+    ),
     );
   }
 }

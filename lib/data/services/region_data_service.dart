@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:app_covid19/data/services/state_abbreviation_service.dart';
 import 'package:http/http.dart' as http;
 

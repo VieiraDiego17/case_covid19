@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:app_covid19/presentation/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 

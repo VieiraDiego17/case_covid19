@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../domain/providers/theme_notifier.dart';
 import '../../domain/usecases/auth_manager.dart';
 import '../utils/app_strings.dart';
 import 'home_page.dart';
@@ -49,6 +51,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeNotifier themeNotifier = Provider.of<ThemeNotifier>(context);
+    ThemeData themeData = themeNotifier.getTheme();
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -75,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                         ),
-                        labelStyle: TextStyle(color: Colors.black),
+                        labelStyle: TextStyle(color: themeData.appBarTheme.foregroundColor),
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 16.0),
                       ),
@@ -98,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                         ),
-                        labelStyle: TextStyle(color: Colors.black),
+                        labelStyle: TextStyle(color: themeData.appBarTheme.foregroundColor),
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 16.0),
                       ),
@@ -121,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                         ),
-                        labelStyle: TextStyle(color: Colors.black),
+                        labelStyle: TextStyle(color: themeData.appBarTheme.foregroundColor),
                         contentPadding: EdgeInsets.symmetric(
                           vertical: 12.0,
                           horizontal: 16.0,
@@ -201,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                           AppStrings.registerUser,
                           style: TextStyle(
                             decoration: TextDecoration.underline,
-                            color: Colors.black87,
+                            color: themeData.appBarTheme.foregroundColor,
                           ),
                         ),
                       ),
